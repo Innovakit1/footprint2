@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Huella de Carbono</title>
+    <style>
+        body {
+            background-image: url('fondo.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #formulario, #preguntas, #resultado {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        input[type="text"], input[type="number"], input[type="radio"] {
+            margin: 10px 0;
+            padding: 10px;
+            width: calc(100% - 22px);
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        h2 {
+            color: #4CAF50;
+        }
+
+        .resultado-texto {
+            font-size: 18px;
+            color: #000;
+        }
+
+        .resultado-detalle {
+            font-size: 18px;
+            color: #000;
+        }
+
+        .opciones {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .opcion {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1 1 calc(33% - 20px);
+            box-sizing: border-box;
+        }
+
+        .opcion:hover, .opcion.seleccionada {
+            background-color: #4CAF50;
+            color: white;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div id="formulario">
+        <h2>Calculadora de Huella de Carbono</h2>
+        <form id="huellaForm">
+            <label for="nombre">Ingresa tu nombre completo:</label>
+            <input type="text" id="nombre" required>
+            <button type="button" onclick="comenzarCalculo()">Comenzar</button>
+        </form>
+    </div>
+
+    <div id="preguntas" style="display:none;">
+        <h2 id="saludo"></h2>
+        <form id="preguntaForm">
+            <!-- Aquí van las preguntas que se mostrarán una por una -->
+        </form>
+        <button type="button" onclick="guardarDatos()">Guardar y Continuar</button>
+    </div>
+
+    <div id="resultado" style="display:none;">
+        <h2 id="resultadoText"></h2>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
