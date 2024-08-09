@@ -115,18 +115,18 @@ function guardarDatos() {
 
 function calcularHuella() {
     personas.forEach(persona => {
-        const vuelos_nacionales = persona[preguntas[4]];
+        const vuelos_nacionales = persona[preguntas[0]];
         const CO2_vuelos_nacionales = vuelos_nacionales * 100 / 1000 / 12; // t CO2 / mes
 
-        const vuelos_internacionales = persona[preguntas[5]];
+        const vuelos_internacionales = persona[preguntas[1]];
         const CO2_vuelos_internacionales = vuelos_internacionales * 100 / 1000 / 12; // t CO2 / mes
 
-        const transporte_trabajo = persona[preguntas[6]];
-        const distancia_trabajo = persona[preguntas[7]];
+        const transporte_trabajo = persona[preguntas[2]];
+        const distancia_trabajo = persona[preguntas[3]];
         const CO2_transporte_trabajo = transporte_trabajo * distancia_trabajo * 5 * 4 / 1000; // t CO2 / mes
 
         // Calcular CO2 de la alimentación según el tipo de dieta habitual
-        const dieta = parseFloat(persona[preguntas[8]]);
+        const dieta = parseFloat(persona[preguntas[4]]);
         const CO2_alimentacion = dieta * 30 / 1000; // t CO2 / mes
 
         const CO2_total = CO2_vuelos_nacionales + CO2_vuelos_internacionales + CO2_transporte_trabajo + CO2_alimentacion;
