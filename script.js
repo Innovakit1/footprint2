@@ -44,7 +44,8 @@ function mostrarSiguientePregunta() {
                     <div class="opcion" onclick="seleccionarOpcion('transporte', '0.1', this)">Transporte público</div>
                     <div class="opcion" onclick="seleccionarOpcion('transporte', '0', this)">Home office</div>
                     <div class="opcion" onclick="seleccionarOpcion('transporte', '0.2', this)">Carro o moto eléctrica</div>
-                </div>`;
+                </div>
+                            `;
             agregarEventListenersOpciones();
         } else if (pregunta === "¿Qué tipo de dieta tienes habitualmente?") {
             form.innerHTML += `
@@ -56,20 +57,24 @@ function mostrarSiguientePregunta() {
                     <div class="opcion" onclick="seleccionarOpcion('dieta', '2.89', this)">Vegana</div>
                     <div class="opcion" onclick="seleccionarOpcion('dieta', '3.81', this)">Vegetariana</div>
                 </div>
-                <p>Una libra de carne tiene 500 g, entonces si generalmente en su casa almuerzan 4 personas con una libra de carne, cada uno se está comiendo 125 gramos de carne. ¡Así que haga bien la cuenta!</p>`;
+                <p>Una libra de carne tiene 500 g, entonces si generalmente en su casa almuerzan 4 personas con una libra de carne, cada uno se esta comiendo 125 gramos de carne. ¡Así que haga bien la cuenta!</p>
+            `;
             agregarEventListenersOpciones();
         } else if (
+            pregunta === "¿Consumo promedio de gas en la factura (m3)?" ||
+            pregunta === "¿Consumo promedio de agua en la factura (m3)?" ||
+            pregunta === "¿Consumo promedio de luz en la factura (kWh)?" ||
             pregunta === "¿Cuántas horas de vuelos NACIONALES realizaste en el último año?" ||
             pregunta === "¿Cuántas horas de vuelos INTERNACIONALES realizaste en el último año?" ||
             pregunta === "¿Cuál es la distancia en kilómetros de tu casa al trabajo?"
         ) {
             form.innerHTML += `<input type="text" id="respuesta" required>`;
-        }
+        } 
     } else {
-        document.getElementById('preguntas').style.display = 'none';
-        calcularHuella();
+            document.getElementById('preguntas').style.display = 'none';
+            calcularHuella();
+        }
     }
-}
 
 function comenzarCalculo() {
     const nombre = document.getElementById('nombre').value;
@@ -110,18 +115,18 @@ function guardarDatos() {
 
 function calcularHuella() {
     personas.forEach(persona => {
-        const vuelos_nacionales = persona[preguntas[0]];
+        const vuelos_nacionales = persona[preguntas[4]];
         const CO2_vuelos_nacionales = vuelos_nacionales * 100 / 1000 / 12; // t CO2 / mes
 
-        const vuelos_internacionales = persona[preguntas[1]];
+        const vuelos_internacionales = persona[preguntas[5]];
         const CO2_vuelos_internacionales = vuelos_internacionales * 100 / 1000 / 12; // t CO2 / mes
 
-        const transporte_trabajo = persona[preguntas[2]];
-        const distancia_trabajo = persona[preguntas[3]];
+        const transporte_trabajo = persona[preguntas[6]];
+        const distancia_trabajo = persona[preguntas[7]];
         const CO2_transporte_trabajo = transporte_trabajo * distancia_trabajo * 5 * 4 / 1000; // t CO2 / mes
 
         // Calcular CO2 de la alimentación según el tipo de dieta habitual
-        const dieta = parseFloat(persona[preguntas[4]]);
+        const dieta = parseFloat(persona[preguntas[8]]);
         const CO2_alimentacion = dieta * 30 / 1000; // t CO2 / mes
 
         const CO2_total = CO2_vuelos_nacionales + CO2_vuelos_internacionales + CO2_transporte_trabajo + CO2_alimentacion;
@@ -132,6 +137,7 @@ function calcularHuella() {
     mostrarResultados();
 }
 
+// Modifica tu función mostrarResultados() para agregar el botón "¿Cómo remediarlo?"
 function mostrarResultados() {
     let resultadosHTML = '';
     personas.forEach(persona => {
@@ -143,38 +149,61 @@ function mostrarResultados() {
                 <p class="resultado-texto">Eres una auténtica VACA en lo que respecta a la huella de carbono.</p>
                 <img src="letrero.png" alt="letrero" width="600" height="45">
                 <img src="vaca.png" alt="vaca" width="600" height="185">
-                <p class="resultado-detalle">La huella de carbono de una vaca es igual a la producción de 76 barriles de petróleo.</p>`;
+                <p class="resultado-detalle">La huella de carbono de una vaca es igual a la producción de 76 barriles de petróleo.</p>
+            `;
         } else if (CO2_anual > 4) {
             resultadosHTML += `
                 <p class="resultado-texto">Eres una OVEJA cuando se trata de contaminación.</p>
                 <img src="letrero.png" alt="vaca" width="600" height="45">
                 <img src="oveja.png" alt="oveja" width="600" height="185">
-                <p class="resultado-detalle">Las ovejas generan emisiones de metano, óxido nitroso y dióxido de carbono, lo que representa el 7,4 % de las emisiones mundiales de Gases de Efecto Invernadero.</p>`;
+                <p class="resultado-detalle">Las ovejas generan emisiones de metano, óxido nitroso y dióxido de carbono, lo que representa el 7,4 % de las emisiones mundiales de Gases de Efecto Invernadero.</p>
+            `;
         } else if (CO2_anual > 2) {
             resultadosHTML += `
                 <p class="resultado-texto">Tus hábitos indican que eres un PEZ en términos de emisiones de carbono.</p>
                 <img src="letrero.png" alt="vaca" width="600" height="45">
                 <img src="pez.png" alt="pez" width="600" height="185">
-                <p class="resultado-detalle">Tienes la misma huella de carbono que un pez o una mojarra.</p>`;
+                <p class="resultado-detalle">Los peces regulan la cantidad de CO2 que permanece en la atmósfera, ya que absorben 30% de las emisiones globales.</p>
+            `;
         } else {
             resultadosHTML += `
-                <p class="resultado-texto">Tu huella de carbono es mínima, lo que te convierte en un ratón.</p>
-                <img src="letrero.png" alt="vaca" width="600" height="45">
-                <img src="raton.png" alt="ratón" width="600" height="185">
-                <p class="resultado-detalle">Los ratones tienen la menor huella de carbono en el reino animal.</p>`;
+                <p class="resultado-texto">¡Eres una HORMIGA INNOVAKIT. Tienes huella ambiental pequeña.</p>
+                <img src="hormiga.png" alt="hormiga" width="600" height="185">
+                <p class="resultado-detalle">Generan la menor huella ambiental al planeta. Esta debería ser nuestra meta siempre.</p>
+            `;
         }
     });
 
-    document.getElementById('resultados').innerHTML = resultadosHTML;
-    document.getElementById('resultados').style.display = 'block';
-    document.getElementById('formulario').style.display = 'none';
-    document.getElementById('preguntas').style.display = 'none';
+    // Agrega el botón "¿Cómo remediarlo?" y el resultado de cuántos árboles sembrar
+    resultadosHTML += `
+        <button type="button" onclick="mostrarCuantosArboles()">¿Qué puedes hacer?</button>
+        <div id="resultadoArboles" style="display:none;"></div>
+    `;
+
+    document.getElementById('resultadoText').innerHTML = resultadosHTML;
+    document.getElementById('resultado').style.display = 'block';
 }
 
-document.getElementById('siguientePregunta').addEventListener('click', function() {
-    guardarDatos();
-});
+function mostrarCuantosArboles() {
+    let arbolesNecesarios = personas.map(persona => {
+        const CO2_anual = persona.CO2_total * 12;
+        return Math.ceil(CO2_anual / 0.2177); // 21.77 kg CO2 absorbidos por un árbol al año
+    });
 
-document.getElementById('empezar').addEventListener('click', function() {
-    comenzarCalculo();
-});
+    const sumaArboles = arbolesNecesarios.reduce((total, arboles) => total + arboles, 0);
+
+    const resultadosHTML = `
+        <h2 style="font-size: 20px; color: #000000;">¡¡Puedes empezar sembrando árboles!!</h2>
+        <p style="font-size: 20px; color: #000000; margin: 0;">Según tus resultados, para compensar tu huella de carbono necesitas sembrar aproximadamente</p>
+        <p style="font-size: 23px; color: #4CAF50; margin: 0;">${sumaArboles} árboles al año.</p>
+        <h2 style="font-size: 20px; color: #000000;">O puedes reducir el consumo de carne, caminar más y practicar el reciclaje.</h2>
+        <img src="arboles.png" alt="arboles" width="600" height="206" style="float: left; margin-right: 10px;">
+        <h2 style="font-size: 23px; color: #278599; font-style: italic; margin-top: 0;">Recuerda: pequeñas acciones graneran grandes cambios.</h2>
+        
+        
+    `;
+
+    // Mostrar los resultados en el div "resultadoArboles" y mostrar este div
+    document.getElementById('resultadoArboles').innerHTML = resultadosHTML;
+    document.getElementById('resultadoArboles').style.display = 'block';
+}
