@@ -1,10 +1,10 @@
 let personas = [];
 let preguntaActual = 0;
 const preguntas = [
-    "¿Cuántas personas viven en tu casa?",
-    "¿Consumo promedio de gas en la factura (m3)?",
-    "¿Consumo promedio de agua en la factura (m3)?",
-    "¿Consumo promedio de luz en la factura (kWh)?",
+    "¿Qué tipo de bombillos tienes en tu casa?",
+    "¿De cuántos minutos son tus duchas diarias?",
+    "¿Te bañas con agua...?",
+    "¿Cuántas prendas de ropa compras al mes?",
     "¿Cuántas horas de vuelos NACIONALES realizaste en el último año?",
     "¿Cuántas horas de vuelos INTERNACIONALES realizaste en el último año?",
     "¿Cuál es tu principal medio de transporte al trabajo?",
@@ -54,20 +54,58 @@ function mostrarSiguientePregunta() {
         } else if (pregunta === "¿Qué tipo de dieta tienes habitualmente?") {
             form.innerHTML += `
                 <div class="opciones">
-                    <div class="opcion" onclick="seleccionarOpcion('dieta', '7.19', this)">Alto contenido cárnico (100g o más al día)</div>
-                    <div class="opcion" onclick="seleccionarOpcion('dieta', '5.63', this)">Medio contenido cárnico (50g a 99g al día)</div>
-                    <div class="opcion" onclick="seleccionarOpcion('dieta', '4.67', this)">Bajo contenido cárnico (menos de 50g al día)</div>
+                    <div class="opcion" onclick="seleccionarOpcion('dieta', '7.19', this)">Alto contenido cárnico (100gr o más al día)</div>
+                    <div class="opcion" onclick="seleccionarOpcion('dieta', '5.63', this)">Medio contenido cárnico (50gr a 99gr al día)</div>
+                    <div class="opcion" onclick="seleccionarOpcion('dieta', '4.67', this)">Bajo contenido cárnico (menos de 50gr al día)</div>
                     <div class="opcion" onclick="seleccionarOpcion('dieta', '3.91', this)">Píscivora (solo pescado)</div>
                     <div class="opcion" onclick="seleccionarOpcion('dieta', '2.89', this)">Vegana</div>
                     <div class="opcion" onclick="seleccionarOpcion('dieta', '3.81', this)">Vegetariana</div>
                 </div>
-                <p>Una libra de carne tiene 500 g, entonces si generalmente en su casa almuerzan 4 personas con una libra de carne, cada uno se esta comiendo 125 gramos de carne. ¡Así que haga bien la cuenta!</p>
+                <p>Una libra de carne tiene 500 gr, entonces si generalmente en tu casa almuerzan 4 personas con una libra de carne, cada uno se esta comiendo 125 gramos de carne. ¡Así que haz bien la cuenta!</p>
+            `;
+            agregarEventListenersOpciones();
+        } else if (pregunta === "¿Qué tipo de bombillos tienes en tu casa?") {
+            form.innerHTML += `
+                <div class="opciones">
+                    <div class="opcion" onclick="seleccionarOpcion('bombillos', '3.6', this)">Incandescente</div>
+                    <div class="opcion" onclick="seleccionarOpcion('bombillos', '2.5', this)">Halógeno</div>
+                    <div class="opcion" onclick="seleccionarOpcion('bombillos', '0.9', this)">Fluorescente</div>
+                    <div class="opcion" onclick="seleccionarOpcion('bombillos', '0.6', this)">LED</div>
+                    <div class="opcion" onclick="seleccionarOpcion('bombillos', '3.6', this)">No sé</div>
+                </div>
+                <img src="bombillos.png" alt="bombillos" width="600" height="185">
+            `;
+            agregarEventListenersOpciones();
+        } else if (pregunta === "¿De cuántos minutos son tus duchas diarias?") {
+            form.innerHTML += `
+                <div class="opciones">
+                    <div class="opcion" onclick="seleccionarOpcion('ducha', '0.3', this)">0-5</div>
+                    <div class="opcion" onclick="seleccionarOpcion('ducha', '0.5', this)">5-10</div>
+                    <div class="opcion" onclick="seleccionarOpcion('ducha', '0.7', this)">10-15</div>
+                    <div class="opcion" onclick="seleccionarOpcion('ducha', '1.5', this)">+15</div>
+                </div>
+            `;
+            agregarEventListenersOpciones();
+        } else if (pregunta === "¿Te bañas con agua...?") {
+            form.innerHTML += `
+                <div class="opciones">
+                    <div class="opcion" onclick="seleccionarOpcion('agua', '1.3', this)">Caliente</div>
+                    <div class="opcion" onclick="seleccionarOpcion('agua', '1', this)">Tibia</div>
+                    <div class="opcion" onclick="seleccionarOpcion('agua', '0', this)">Fria</div>
+                </div>
+            `;
+            agregarEventListenersOpciones();
+        } else if (pregunta === "¿Cuántas prendas de ropa compras al mes?") {
+            form.innerHTML += `
+                <div class="opciones">
+                    <div class="opcion" onclick="seleccionarOpcion('ropa', '10', this)">Menos de 1 prenda</div>
+                    <div class="opcion" onclick="seleccionarOpcion('ropa', '50', this)">2 a 3 prendas</div>
+                    <div class="opcion" onclick="seleccionarOpcion('ropa', '90', this)">4 a 5 prendas</div>
+                    <div class="opcion" onclick="seleccionarOpcion('ropa', '160', this)">Más de 6 prendas</div>
+                </div>
             `;
             agregarEventListenersOpciones();
         } else if (
-            pregunta === "¿Consumo promedio de gas en la factura (m3)?" ||
-            pregunta === "¿Consumo promedio de agua en la factura (m3)?" ||
-            pregunta === "¿Consumo promedio de luz en la factura (kWh)?" ||
             pregunta === "¿Cuántas horas de vuelos NACIONALES realizaste en el último año?" ||
             pregunta === "¿Cuántas horas de vuelos INTERNACIONALES realizaste en el último año?" ||
             pregunta === "¿Cuál es la distancia en kilómetros de tu casa al trabajo?"
@@ -123,15 +161,15 @@ function guardarDatos() {
 
 function calcularHuella() {
     personas.forEach(persona => {
-        const personasHogar = persona[preguntas[0]];
-        const consumo_gas_personal = persona[preguntas[1]] / personasHogar;
-        const CO2_gasnatural = consumo_gas_personal * 2.75 / 1000; // t CO2 / mes
+        const bombillos = persona[preguntas[0]];
+        const CO2_bombillos = bombillos * 5 / 12 / 1000;  // t CO2 / mes
 
-        const consumo_agua_personal = persona[preguntas[2]] / personasHogar;
-        const CO2_agua = consumo_agua_personal * 4 / 1000; // t CO2 / mes
+        const ducha = persona[preguntas[1]];
+        const agua = persona[preguntas[2]];
+        const CO2_agua = ducha * agua * 365 / 1000 / 12;  // t CO2 / mes
 
-        const consumo_luz_personal = persona[preguntas[3]] / personasHogar;
-        const CO2_luz = consumo_luz_personal * 0.16438 / 1000; // t CO2 / mes
+        const ropa = persona[preguntas[3]];
+        const CO2_ropa = ropa / 1000 // t CO2 / mes
 
         const vuelos_nacionales = persona[preguntas[4]];
         const CO2_vuelos_nacionales = vuelos_nacionales * 100 / 1000 / 12; // t CO2 / mes
@@ -147,7 +185,7 @@ function calcularHuella() {
         const dieta = parseFloat(persona[preguntas[8]]);
         const CO2_alimentacion = dieta * 30 / 1000; // t CO2 / mes
 
-        const CO2_total = CO2_gasnatural + CO2_agua + CO2_luz + CO2_vuelos_nacionales + CO2_vuelos_internacionales + CO2_transporte_trabajo + CO2_alimentacion;
+        const CO2_total = CO2_bombillos + CO2_agua + CO2_ropa + CO2_vuelos_nacionales + CO2_vuelos_internacionales + CO2_transporte_trabajo + CO2_alimentacion;
 
         persona.CO2_total = CO2_total;
     });
